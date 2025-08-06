@@ -38,3 +38,9 @@ source myenv/bin/activate
 pip freeze > requirements.txt
 source myenv/bin/activate
 python app.py
+<img width="1919" height="1017" alt="Screenshot 2025-08-06 094701" src="https://github.com/user-attachments/assets/76e045a9-a7b7-42aa-9c44-57b4e8ab3b3f" />
+<img width="1917" height="1022" alt="Screenshot 2025-08-06 094721" src="https://github.com/user-attachments/assets/d4266b4c-b68c-443b-af65-36e2b6044515" />
+<img width="1919" height="1015" alt="Screenshot 2025-08-06 095010" src="https://github.com/user-attachments/assets/efa543f1-7c60-4465-99bf-5437d50e0362" />
+<img width="1919" height="1012" alt="Screenshot 2025-08-06 095048" src="https://github.com/user-attachments/assets/95af40fe-cad3-4e74-a677-281aa7d38516" />
+
+
