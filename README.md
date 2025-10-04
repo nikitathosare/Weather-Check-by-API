@@ -1,5 +1,11 @@
 # 🌦️ Flask Weather App with OpenWeatherMap API on Amazon EC2
 
+![](./img/Screenshot%202025-08-06%20094701.png)
+![](./img/Screenshot%202025-08-06%20094721.png)
+![](./img/Screenshot%202025-08-06%20094912.png)
+
+
+
 This project is a simple **Flask web application** that allows users to enter a city name and retrieve **real-time weather information** using the [OpenWeatherMap API](https://openweathermap.org/). The app is hosted on an **Amazon EC2 instance** running **Amazon Linux 2**.
 
 ---
