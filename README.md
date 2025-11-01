@@ -1,4 +1,4 @@
-# 🌦️ Flask Weather App with OpenWeatherMap API on Amazon EC2
+#  Flask Weather App with OpenWeatherMap API on Amazon EC2
 
 ![](./img/Screenshot%202025-08-06%20094701.png)
 ![](./img/Screenshot%202025-08-06%20094721.png)
@@ -10,7 +10,7 @@ This project is a simple **Flask web application** that allows users to enter a 
 
 ---
 
-## 📦 Tech Stack
+##  Tech Stack
 
 - **Python 3**
 - **Flask**
@@ -20,7 +20,7 @@ This project is a simple **Flask web application** that allows users to enter a 
 
 ---
 
-## ✅ Prerequisites
+##  Prerequisites
 
 - An AWS EC2 instance (Amazon Linux 2)
 - Port `5000` open in EC2 Security Group
@@ -28,7 +28,7 @@ This project is a simple **Flask web application** that allows users to enter a 
 
 ---
 
-## 🚀 Setup Instructions
+##  Setup Instructions
 
 ### 🔹 1. Connect to Your EC2 Instance
 ```bash
