@@ -1,700 +1,356 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Weather App</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 50%, #6c5ce7 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        /* Animated clouds background */
-        .cloud {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50px;
-            opacity: 0.6;
-            animation: float 20s infinite linear;
-        }
-        
-        .cloud:before,
-        .cloud:after {
-            content: '';
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50px;
-        }
-        
-        .cloud1 {
-            width: 100px;
-            height: 40px;
-            top: 20%;
-            left: -100px;
-            animation-delay: 0s;
-        }
-        
-        .cloud1:before {
-            width: 50px;
-            height: 50px;
-            top: -25px;
-            left: 10px;
-        }
-        
-        .cloud1:after {
-            width: 60px;
-            height: 40px;
-            top: -15px;
-            right: 10px;
-        }
-        
-        .cloud2 {
-            width: 80px;
-            height: 30px;
-            top: 40%;
-            left: -80px;
-            animation-delay: -10s;
-        }
-        
-        .cloud2:before {
-            width: 40px;
-            height: 40px;
-            top: -20px;
-            left: 15px;
-        }
-        
-        .cloud2:after {
-            width: 50px;
-            height: 30px;
-            top: -10px;
-            right: 15px;
-        }
-        
-        .cloud3 {
-            width: 120px;
-            height: 50px;
-            top: 60%;
-            left: -120px;
-            animation-delay: -5s;
-        }
-        
-        .cloud3:before {
-            width: 60px;
-            height: 60px;
-            top: -30px;
-            left: 20px;
-        }
-        
-        .cloud3:after {
-            width: 70px;
-            height: 50px;
-            top: -20px;
-            right: 20px;
-        }
-        
-        @keyframes float {
-            from {
-                transform: translateX(0);
-            }
-            to {
-                transform: translateX(calc(100vw + 120px));
-            }
-        }
-        
-        /* Main container */
-        .weather-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 30px;
-            padding: 50px 40px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            max-width: 500px;
-            width: 90%;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            animation: slideUp 0.8s ease-out;
-            position: relative;
-            z-index: 10;
-        }
-        
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 600;
-            margin-bottom: 30px;
-            background: linear-gradient(135deg, #74b9ff, #0984e3);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: bounce 2s ease-in-out infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-        
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-        
-        label {
-            font-size: 1.2rem;
-            font-weight: 500;
-            color: #2d3436;
-            text-align: left;
-        }
-        
-        input[type="text"] {
-            padding: 18px 25px;
-            font-size: 1.1rem;
-            border: 2px solid transparent;
-            border-radius: 50px;
-            background: linear-gradient(white, white) padding-box,
-                        linear-gradient(135deg, #74b9ff, #0984e3) border-box;
-            outline: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 15px rgba(116, 185, 255, 0.2);
-        }
-        
-        input[type="text"]:focus {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(116, 185, 255, 0.4);
-            border-color: #74b9ff;
-        }
-        
-        input[type="text"]::placeholder {
-            color: #b2bec3;
-        }
-        
-        button {
-            background: linear-gradient(135deg, #74b9ff, #0984e3);
-            color: white;
-            border: none;
-            padding: 18px 40px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 6px 20px rgba(116, 185, 255, 0.4);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        button:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s;
-        }
-        
-        button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(116, 185, 255, 0.6);
-        }
-        
-        button:hover:before {
-            left: 100%;
-        }
-        
-        button:active {
-            transform: translateY(-1px);
-        }
-        
-        /* Weather icons animation */
-        .weather-icons {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        
-        .weather-icon {
-            position: absolute;
-            font-size: 2rem;
-            opacity: 0.3;
-            animation: floatIcons 15s infinite linear;
-        }
-        
-        .icon1 { top: 10%; left: -50px; animation-delay: 0s; }
-        .icon2 { top: 30%; left: -50px; animation-delay: -3s; }
-        .icon3 { top: 50%; left: -50px; animation-delay: -6s; }
-        .icon4 { top: 70%; left: -50px; animation-delay: -9s; }
-        .icon5 { top: 90%; left: -50px; animation-delay: -12s; }
-        
-        @keyframes floatIcons {
-            from {
-                transform: translateX(0) rotate(0deg);
-            }
-            to {
-                transform: translateX(calc(100vw + 100px)) rotate(360deg);
-            }
-        }
-        
-        /* Responsive design */
-        @media (max-width: 600px) {
-            .weather-container {
-                padding: 40px 30px;
-                margin: 20px;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            input[type="text"], button {
-                font-size: 1rem;
-                padding: 15px 20px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Weather Result</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body { 
+      font-family: 'Poppins', sans-serif; 
+      background: linear-gradient(135deg, #66a6ff 0%, #89f7fe 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* Floating clouds animation */
+    .cloud {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 100px;
+      animation: float 20s infinite ease-in-out;
+    }
+    
+    .cloud:before, .cloud:after {
+      content: '';
+      position: absolute;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 100px;
+    }
+    
+    .cloud1 {
+      width: 120px;
+      height: 40px;
+      top: 20%;
+      left: -120px;
+      animation-delay: 0s;
+    }
+    
+    .cloud1:before {
+      width: 50px;
+      height: 50px;
+      top: -25px;
+      left: 10px;
+    }
+    
+    .cloud1:after {
+      width: 60px;
+      height: 40px;
+      top: -15px;
+      right: 15px;
+    }
+    
+    .cloud2 {
+      width: 100px;
+      height: 35px;
+      top: 60%;
+      left: -100px;
+      animation-delay: 7s;
+    }
+    
+    .cloud2:before {
+      width: 40px;
+      height: 40px;
+      top: -20px;
+      left: 15px;
+    }
+    
+    .cloud2:after {
+      width: 50px;
+      height: 35px;
+      top: -12px;
+      right: 10px;
+    }
+    
+    .cloud3 {
+      width: 140px;
+      height: 45px;
+      top: 40%;
+      left: -140px;
+      animation-delay: 14s;
+    }
+    
+    .cloud3:before {
+      width: 55px;
+      height: 55px;
+      top: -28px;
+      left: 20px;
+    }
+    
+    .cloud3:after {
+      width: 65px;
+      height: 45px;
+      top: -18px;
+      right: 18px;
+    }
+    
+    @keyframes float {
+      0%, 100% {
+        transform: translateX(0) translateY(0);
+      }
+      50% {
+        transform: translateX(calc(100vw + 200px)) translateY(-20px);
+      }
+    }
+    
+    /* Sparkle animation */
+    .sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: white;
+      border-radius: 50%;
+      animation: sparkle 3s infinite;
+      opacity: 0;
+    }
+    
+    @keyframes sparkle {
+      0%, 100% { opacity: 0; transform: scale(0); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+    
+    .sparkle:nth-child(1) { top: 15%; left: 20%; animation-delay: 0s; }
+    .sparkle:nth-child(2) { top: 25%; left: 80%; animation-delay: 1s; }
+    .sparkle:nth-child(3) { top: 70%; left: 15%; animation-delay: 2s; }
+    .sparkle:nth-child(4) { top: 80%; left: 85%; animation-delay: 0.5s; }
+    .sparkle:nth-child(5) { top: 50%; left: 50%; animation-delay: 1.5s; }
+    
+    /* Sun animation */
+    .sun {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      width: 80px;
+      height: 80px;
+      background: #FFD700;
+      border-radius: 50%;
+      box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+      animation: rotate 20s linear infinite;
+      z-index: 5;
+    }
+    
+    .sun:before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.2); opacity: 0.3; }
+    }
+    
+    .card { 
+      background: rgba(255, 255, 255, 0.25); 
+      padding: 50px 60px; 
+      border-radius: 30px; 
+      backdrop-filter: blur(15px); 
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      animation: slideIn 0.8s ease-out;
+      position: relative;
+      z-index: 10;
+      max-width: 500px;
+    }
+    
+    @keyframes slideIn {
+      from { 
+        opacity: 0; 
+        transform: translateY(30px);
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0);
+      }
+    }
+    
+    h2 { 
+      color: #fff; 
+      font-size: 2em;
+      margin-bottom: 25px;
+      font-weight: 600;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 1s ease-in 0.3s both;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    p { 
+      font-size: 18px; 
+      margin: 15px 0;
+      opacity: 0;
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+    
+    p:nth-child(2) { animation-delay: 0.4s; }
+    p:nth-child(3) { animation-delay: 0.5s; }
+    p:nth-child(4) { animation-delay: 0.6s; }
+    p:nth-child(5) { animation-delay: 0.7s; }
+    
+    @keyframes fadeInUp {
+      from { 
+        opacity: 0; 
+        transform: translateY(10px);
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0);
+      }
+    }
+    
+    strong {
+      font-weight: 600;
+      font-size: 1.1em;
+    }
+    
+    .error { 
+      color: #ff6b6b; 
+      font-weight: bold; 
+      font-size: 22px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      animation: shake 0.5s ease-in-out;
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+    
+    a { 
+      display: inline-block; 
+      margin-top: 25px; 
+      padding: 12px 30px;
+      color: #fff; 
+      text-decoration: none;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 50px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      animation: fadeInUp 0.6s ease-out 0.8s both;
+    }
+    
+    a:hover { 
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    a:active {
+      transform: translateY(0);
+    }
+    
+    /* Weather icon animations */
+    .weather-icon {
+      font-size: 4em;
+      margin-bottom: 20px;
+      display: inline-block;
+      animation: bounceIn 1s ease-out;
+    }
+    
+    @keyframes bounceIn {
+      0% { 
+        opacity: 0; 
+        transform: scale(0.3);
+      }
+      50% { 
+        opacity: 1; 
+        transform: scale(1.1);
+      }
+      70% { transform: scale(0.9); }
+      100% { transform: scale(1); }
+    }
+    
+    @media (max-width: 600px) {
+      .card {
+        padding: 40px 30px;
+        margin: 20px;
+      }
+      
+      h2 {
+        font-size: 1.6em;
+      }
+      
+      p {
+        font-size: 16px;
+      }
+      
+      .sun {
+        width: 60px;
+        height: 60px;
+        top: 20px;
+        right: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Animated background clouds -->
-    <div class="cloud cloud1"></div>
-    <div class="cloud cloud2"></div>
-    <div class="cloud cloud3"></div>
-    
-    <!-- Floating weather icons -->
-    <div class="weather-icons">
-        <div class="weather-icon icon1">🌤️</div>
-        <div class="weather-icon icon2">⛅</div>
-        <div class="weather-icon icon3">🌧️</div>
-        <div class="weather-icon icon4">❄️</div>
-        <div class="weather-icon icon5">🌈</div>
+  <!-- Animated sun -->
+  <div class="sun"></div>
+  
+  <!-- Floating clouds -->
+  <div class="cloud cloud1"></div>
+  <div class="cloud cloud2"></div>
+  <div class="cloud cloud3"></div>
+  
+  <!-- Sparkles -->
+  <div class="sparkle"></div>
+  <div class="sparkle"></div>
+  <div class="sparkle"></div>
+  <div class="sparkle"></div>
+  <div class="sparkle"></div>
+  
+  {% if error %}
+    <div class="card">
+      <div class="weather-icon">⚠️</div>
+      <p class="error">{{ error }}</p>
+      <a href="/">🔙 Try Again</a>
     </div>
-    
-    <div class="weather-container">
-        <h1>🌤️ Weather Finder</h1>
-        <form action="/weather" method="post">
-            <label for="city">Enter City Name:</label>
-            <input type="text" name="city" required placeholder="e.g., New York, London, Tokyo...">
-            <button type="submit">Get Weather</button>
-        </form>
+  {% else %}
+    <div class="card">
+      <div class="weather-icon">🌤️</div>
+      <h2>Weather in {{ weather.city }}, {{ weather.country }}</h2>
+      <p>🌡️ Temperature: <strong>{{ weather.temperature }}°C</strong></p>
+      <p>☁️ Condition: <strong>{{ weather.description }}</strong></p>
+      <p>💧 Humidity: <strong>{{ weather.humidity }}%</strong></p>
+      <p>🌬️ Wind Speed: <strong>{{ weather.wind_speed }} m/s</strong></p>
+      <a href="/">🔙 Check Another City</a>
     </div>
-</body>
-</html>
-(weatherenv) [ec2-user@ip-172-31-31-238 weatherly]$ cat templates/result.html 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Weather Result</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 50%, #6c5ce7 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            padding: 20px;
-        }
-        
-        /* Animated clouds background */
-        .cloud {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50px;
-            opacity: 0.6;
-            animation: float 20s infinite linear;
-        }
-        
-        .cloud:before,
-        .cloud:after {
-            content: '';
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50px;
-        }
-        
-        .cloud1 {
-            width: 100px;
-            height: 40px;
-            top: 20%;
-            left: -100px;
-            animation-delay: 0s;
-        }
-        
-        .cloud1:before {
-            width: 50px;
-            height: 50px;
-            top: -25px;
-            left: 10px;
-        }
-        
-        .cloud1:after {
-            width: 60px;
-            height: 40px;
-            top: -15px;
-            right: 10px;
-        }
-        
-        .cloud2 {
-            width: 80px;
-            height: 30px;
-            top: 40%;
-            left: -80px;
-            animation-delay: -10s;
-        }
-        
-        .cloud2:before {
-            width: 40px;
-            height: 40px;
-            top: -20px;
-            left: 15px;
-        }
-        
-        .cloud2:after {
-            width: 50px;
-            height: 30px;
-            top: -10px;
-            right: 15px;
-        }
-        
-        .cloud3 {
-            width: 120px;
-            height: 50px;
-            top: 60%;
-            left: -120px;
-            animation-delay: -5s;
-        }
-        
-        .cloud3:before {
-            width: 60px;
-            height: 60px;
-            top: -30px;
-            left: 20px;
-        }
-        
-        .cloud3:after {
-            width: 70px;
-            height: 50px;
-            top: -20px;
-            right: 20px;
-        }
-        
-        @keyframes float {
-            from {
-                transform: translateX(0);
-            }
-            to {
-                transform: translateX(calc(100vw + 120px));
-            }
-        }
-        
-        /* Main container */
-        .weather-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 30px;
-            padding: 50px 40px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-            text-align: center;
-            max-width: 600px;
-            width: 90%;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            animation: slideUp 0.8s ease-out;
-            position: relative;
-            z-index: 10;
-        }
-        
-        .error-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 30px;
-            padding: 40px;
-            box-shadow: 0 25px 50px rgba(231, 76, 60, 0.3);
-            text-align: center;
-            max-width: 500px;
-            width: 90%;
-            border: 2px solid rgba(231, 76, 60, 0.3);
-            animation: slideUp 0.8s ease-out, shake 0.5s ease-in-out;
-            position: relative;
-            z-index: 10;
-        }
-        
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 600;
-            margin-bottom: 30px;
-            background: linear-gradient(135deg, #74b9ff, #0984e3);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: bounce 2s ease-in-out infinite;
-        }
-        
-        h2 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: #e74c3c;
-            margin-bottom: 30px;
-            animation: pulse 2s ease-in-out infinite;
-        }
-        
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-        
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.7;
-            }
-        }
-        
-        /* Weather data styling */
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 30px 0;
-        }
-        
-        li {
-            background: linear-gradient(135deg, rgba(116, 185, 255, 0.1), rgba(108, 92, 231, 0.1));
-            margin: 15px 0;
-            padding: 20px 25px;
-            border-radius: 20px;
-            border: 1px solid rgba(116, 185, 255, 0.2);
-            font-size: 1.2rem;
-            font-weight: 500;
-            color: #2d3436;
-            text-align: left;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: fadeInUp 0.6s ease-out forwards;
-            animation-delay: calc(var(--delay) * 0.1s);
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        
-        li:nth-child(1) { --delay: 1; }
-        li:nth-child(2) { --delay: 2; }
-        li:nth-child(3) { --delay: 3; }
-        li:nth-child(4) { --delay: 4; }
-        
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        li:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(116, 185, 255, 0.3);
-            background: linear-gradient(135deg, rgba(116, 185, 255, 0.2), rgba(108, 92, 231, 0.2));
-        }
-        
-        /* Back button styling */
-        a {
-            display: inline-block;
-            background: linear-gradient(135deg, #74b9ff, #0984e3);
-            color: white;
-            text-decoration: none;
-            padding: 15px 30px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            border-radius: 50px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 6px 20px rgba(116, 185, 255, 0.4);
-            position: relative;
-            overflow: hidden;
-            animation: slideInUp 0.8s ease-out 0.5s forwards;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        
-        @keyframes slideInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        a:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s;
-        }
-        
-        a:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(116, 185, 255, 0.6);
-        }
-        
-        a:hover:before {
-            left: 100%;
-        }
-        
-        /* Weather icons animation */
-        .weather-icons {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        
-        .weather-icon {
-            position: absolute;
-            font-size: 2rem;
-            opacity: 0.3;
-            animation: floatIcons 15s infinite linear;
-        }
-        
-        .icon1 { top: 10%; left: -50px; animation-delay: 0s; }
-        .icon2 { top: 30%; left: -50px; animation-delay: -3s; }
-        .icon3 { top: 50%; left: -50px; animation-delay: -6s; }
-        .icon4 { top: 70%; left: -50px; animation-delay: -9s; }
-        .icon5 { top: 90%; left: -50px; animation-delay: -12s; }
-        
-        @keyframes floatIcons {
-            from {
-                transform: translateX(0) rotate(0deg);
-            }
-            to {
-                transform: translateX(calc(100vw + 100px)) rotate(360deg);
-            }
-        }
-        
-        /* Responsive design */
-        @media (max-width: 600px) {
-            .weather-container, .error-container {
-                padding: 40px 30px;
-                margin: 20px 10px;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            h2 {
-                font-size: 1.5rem;
-            }
-            
-            li {
-                font-size: 1.1rem;
-                padding: 18px 20px;
-            }
-            
-            a {
-                font-size: 1rem;
-                padding: 12px 25px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Animated background clouds -->
-    <div class="cloud cloud1"></div>
-    <div class="cloud cloud2"></div>
-    <div class="cloud cloud3"></div>
-    
-    <!-- Floating weather icons -->
-    <div class="weather-icons">
-        <div class="weather-icon icon1">🌤️</div>
-        <div class="weather-icon icon2">⛅</div>
-        <div class="weather-icon icon3">🌧️</div>
-        <div class="weather-icon icon4">❄️</div>
-        <div class="weather-icon icon5">🌈</div>
-    </div>
-    
-    {% if error %}
-        <div class="error-container">
-            <h2>{{ error }}</h2>
-            <br><a href="/">🔙 Back</a>
-        </div>
-    {% else %}
-        <div class="weather-container">
-            <h1>🌤️ Weather in {{ weather.city }}</h1>
-            <ul>
-                <li>🌡️ Temperature: {{ weather.temperature }} °C</li>
-                <li>🌥️ Weather: {{ weather.weather }}</li>
-                <li>💧 Humidity: {{ weather.humidity }}%</li>
-                <li>💨 Wind Speed: {{ weather.wind }} km/h</li>
-            </ul>
-            <a href="/">🔙 Back</a>
-        </div>
-    {% endif %}
+  {% endif %}
 </body>
 </html>
